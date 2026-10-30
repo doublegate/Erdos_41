@@ -1,0 +1,40 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\begin{thebibliography}{12}
+
+\bibitem{BoseChowla1962}
+R.~C.~Bose and S.~Chowla, \emph{Theorems in the additive theory of numbers}, Comment. Math. Helv. \textbf{37} (1962), 141--147.
+
+\bibitem{Chen1996}
+Y.-G.~Chen, \emph{On $B_{2k-1}$-sequences}, Abh. Math. Sem. Univ. Hamburg \textbf{66} (1996), 241--247.
+
+\bibitem{Cilleruelo2001}
+J.~Cilleruelo, \emph{New upper bounds for finite $B_h$ sequences}, Adv. Math. \textbf{159} (2001), no.~1, 1--17.
+
+\bibitem{ErdosTuran1941}
+P.~Erd{\H{o}}s and P.~Tur{\'a}n, \emph{On a problem of {Sidon} in additive number theory, and on some related problems}, J. London Math. Soc. \textbf{s1-16} (1941), no.~4, 212--215.
+
+\bibitem{HalberstamRoth1966}
+H.~Halberstam and K.~F.~Roth, \emph{Sequences}, Clarendon Press, Oxford, 1966.
+
+\bibitem{Jia1993}
+X.-D.~Jia, \emph{On $B_{2k}$-sequences}, J. Number Theory \textbf{45} (1993), no.~2, 241--253.
+
+\bibitem{Kassis2026}
+T.~Kassis, V.~Agarwal, Y.~He, D.~Patel, and A.~M.~Brueckner, \emph{Scientific Agent Skills: A library of procedural knowledge for research agents}, arXiv preprint arXiv:2609.00065 (2026).
+
+\bibitem{Nash1989}
+J.~C.~M.~Nash, \emph{On $B_4$-sequences}, Canad. Math. Bull. \textbf{32} (1989), no.~4, 446--449.
+
+\bibitem{Nash1995}
+J.~C.~M.~Nash, \emph{Some applications of a theorem of {M. Kneser}}, J. Number Theory \textbf{50} (1995), no.~1, 181--188.
+
+\bibitem{OBryant2004}
+K.~O'Bryant, \emph{A complete annotated bibliography of work related to {Sidon} sequences}, Electron. J. Combin. \textbf{DS11} (2004), 1--39.
+
+\bibitem{Singer1938}
+J.~Singer, \emph{A theorem in finite projective geometry and some applications to number theory}, Trans. Amer. Math. Soc. \textbf{43} (1938), no.~3, 377--385.
+
+\bibitem{Stohr1955}
+A.~St{\"o}hr, \emph{Gel{\"o}ste und ungel{\"o}ste {Fragen} {\"u}ber {Basen} der nat{\"u}rlichen {Zahlenreihe}. {II}}, J. Reine Angew. Math. \textbf{194} (1955), 111--140.
+
+\end{thebibliography}

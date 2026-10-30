@@ -1,0 +1,241 @@
+{
+  "problem": "Erdos Problem #41 ($500 Prize: liminf A(x)/x^(1/3) = 0 for infinite B_3 sequences)",
+  "precision_digits": 50,
+  "sympy_identities": {
+    "vandermonde_b3_identity": "PASS",
+    "kkt_cubic_increment_identity": "PASS",
+    "legendre_fenchel_b3_excess": "PASS",
+    "binary_subblock_variance_splitting": "PASS",
+    "haar_sawtooth_period_integral": "PASS"
+  },
+  "finite_verification": {
+    "optimal_b3_rulers_verified_k_1_to_10": true,
+    "a004023_r16_localized_cross_shell_triples": 2704,
+    "a004023_r16_total_actual_subblock_excess": 242.5011901855,
+    "a004023_r16_total_lf_sawtooth_excess": 240.5011901855,
+    "a004023_r16_total_binary_split_diff_sq": 270
+  },
+  "optimal_b3_rulers_a051912": {
+    "1": {
+      "min_n": 1,
+      "ruler_length": 0,
+      "witness": [
+        1
+      ]
+    },
+    "2": {
+      "min_n": 2,
+      "ruler_length": 1,
+      "witness": [
+        1,
+        2
+      ]
+    },
+    "3": {
+      "min_n": 5,
+      "ruler_length": 4,
+      "witness": [
+        1,
+        2,
+        5
+      ]
+    },
+    "4": {
+      "min_n": 12,
+      "ruler_length": 11,
+      "witness": [
+        1,
+        2,
+        8,
+        12
+      ]
+    },
+    "5": {
+      "min_n": 24,
+      "ruler_length": 23,
+      "witness": [
+        1,
+        2,
+        16,
+        19,
+        24
+      ]
+    },
+    "6": {
+      "min_n": 46,
+      "ruler_length": 45,
+      "witness": [
+        1,
+        3,
+        12,
+        27,
+        43,
+        46
+      ]
+    },
+    "7": {
+      "min_n": 83,
+      "ruler_length": 82,
+      "witness": [
+        1,
+        2,
+        8,
+        51,
+        60,
+        79,
+        83
+      ]
+    },
+    "8": {
+      "min_n": 140,
+      "ruler_length": 139,
+      "witness": [
+        1,
+        2,
+        33,
+        88,
+        103,
+        113,
+        132,
+        140
+      ]
+    },
+    "9": {
+      "min_n": 227,
+      "ruler_length": 226,
+      "witness": [
+        1,
+        7,
+        38,
+        40,
+        119,
+        180,
+        201,
+        218,
+        227
+      ]
+    },
+    "10": {
+      "min_n": 345,
+      "ruler_length": 344,
+      "witness": [
+        1,
+        4,
+        11,
+        20,
+        35,
+        124,
+        193,
+        270,
+        334,
+        345
+      ]
+    }
+  },
+  "diophantine_haar_closure": {
+    "K_star_50dps": "0.57891213872075425992896953821682748",
+    "K_star_inv_cbrt_50dps": "1.1998559643002710371960885596378176",
+    "A_GK_50dps": "1.2824271291006226368753425688697917",
+    "C_GK_2lnA_50dps": "0.49750895406756852509450598715222795",
+    "trajectory": [
+      {
+        "K_octaves": 0,
+        "kappa_int_3_Dio": "0.0",
+        "c_infty_3_star_Dio": "1.19985596430027104",
+        "kappa_int_3_Dio_GK": "0.0",
+        "c_infty_3_star_Dio_GK": "1.19985596430027104"
+      },
+      {
+        "K_octaves": 1,
+        "kappa_int_3_Dio": "0.308065413582197915",
+        "c_infty_3_star_Dio": "1.0971161980066668",
+        "kappa_int_3_Dio_GK": "0.971410685672289282",
+        "c_infty_3_star_Dio_GK": "0.956907766081757548"
+      },
+      {
+        "K_octaves": 2,
+        "kappa_int_3_Dio": "0.492904661731516664",
+        "c_infty_3_star_Dio": "1.04982865655007827",
+        "kappa_int_3_Dio_GK": "1.2889189882396263",
+        "c_infty_3_star_Dio_GK": "0.910442048637346847"
+      },
+      {
+        "K_octaves": 4,
+        "kappa_int_3_Dio": "0.927820539729913721",
+        "c_infty_3_star_Dio": "0.964066326070223064",
+        "kappa_int_3_Dio_GK": "1.86430798268063095",
+        "c_infty_3_star_Dio_GK": "0.844868678960644752"
+      },
+      {
+        "K_octaves": 8,
+        "kappa_int_3_Dio": "1.84842068615453629",
+        "c_infty_3_star_Dio": "0.846436542043016367",
+        "kappa_int_3_Dio_GK": "2.83956692927747436",
+        "c_infty_3_star_Dio_GK": "0.766246259000296363"
+      },
+      {
+        "K_octaves": 16,
+        "kappa_int_3_Dio": "3.69678496384709981",
+        "c_infty_3_star_Dio": "0.716465950402899763",
+        "kappa_int_3_Dio_GK": "4.69178768944553034",
+        "c_infty_3_star_Dio_GK": "0.67201590310881329"
+      },
+      {
+        "K_octaves": 32,
+        "kappa_int_3_Dio": "7.39356992597274997",
+        "c_infty_3_star_Dio": "0.590400718102962326",
+        "kappa_int_3_Dio_GK": "8.38858783387621636",
+        "c_infty_3_star_Dio_GK": "0.568759971069096579"
+      },
+      {
+        "K_octaves": 64,
+        "kappa_int_3_Dio": "14.7871398519454999",
+        "c_infty_3_star_Dio": "0.478293665631200284",
+        "kappa_int_3_Dio_GK": "15.782157760080637",
+        "c_infty_3_star_Dio_GK": "0.468647726886223823"
+      },
+      {
+        "K_octaves": 128,
+        "kappa_int_3_Dio": "29.5742797038909999",
+        "c_infty_3_star_Dio": "0.383716407586313659",
+        "kappa_int_3_Dio_GK": "30.5692976120261369",
+        "c_infty_3_star_Dio_GK": "0.379641902880269235"
+      },
+      {
+        "K_octaves": 256,
+        "kappa_int_3_Dio": "59.1485594077819997",
+        "c_infty_3_star_Dio": "0.306234444809234561",
+        "kappa_int_3_Dio_GK": "60.1435773159171368",
+        "c_infty_3_star_Dio_GK": "0.304564186231889471"
+      },
+      {
+        "K_octaves": 512,
+        "kappa_int_3_Dio": "118.297118815563999",
+        "c_infty_3_star_Dio": "0.243735691382557729",
+        "kappa_int_3_Dio_GK": "119.292136723699137",
+        "c_infty_3_star_Dio_GK": "0.243061795424982196"
+      },
+      {
+        "K_octaves": 1024,
+        "kappa_int_3_Dio": "236.594237631127999",
+        "c_infty_3_star_Dio": "0.19372417206737536",
+        "kappa_int_3_Dio_GK": "237.589255539263136",
+        "c_infty_3_star_Dio_GK": "0.193454492970072959"
+      },
+      {
+        "K_octaves": 2048,
+        "kappa_int_3_Dio": "473.188475262255998",
+        "c_infty_3_star_Dio": "0.153866987073369459",
+        "kappa_int_3_Dio_GK": "474.183493170391135",
+        "c_infty_3_star_Dio_GK": "0.153759514629124135"
+      },
+      {
+        "K_octaves": 4096,
+        "kappa_int_3_Dio": "946.376950524511996",
+        "c_infty_3_star_Dio": "0.12216726273915838",
+        "kappa_int_3_Dio_GK": "947.371968432647133",
+        "c_infty_3_star_Dio_GK": "0.122124522423627899"
+      }
+    ]
+  }
+}

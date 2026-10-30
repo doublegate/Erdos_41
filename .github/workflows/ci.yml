@@ -1,0 +1,55 @@
+name: Lean 4, Python Diophantine-Haar B3 Certificate, & Rust Verification CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lean4-verification:
+    name: Lean 4 Formal Proof & Axiom Audit (v4.33.1)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install elan and Lean 4
+        run: |
+          set -o pipefail
+          curl -sSfL https://github.com/leanprover/elan/releases/download/v4.1.1/elan-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          ./elan-init -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+      - name: Build Lean 4 proofs with --wfail
+        run: lake --wfail build
+      - name: Run Kernel Axiom Audit (#print axioms)
+        run: lake env lean Erdos41/AxiomCheck.lean
+
+  python-verification:
+    name: Python 3 Diophantine-Haar B3 & Telescoping Ray Certificate Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install NumPy, SciPy, & SymPy
+        run: pip install numpy scipy sympy
+      - name: Verify Diophantine-Haar B3 Closure Certificates
+        run: python3 paper/anc/verify_erdos41_diophantine_haar.py
+      - name: Verify Full Theorems 2.1-2.12 Hierarchy
+        run: python3 scripts/verify_erdos41_theorems.py
+
+  rust-suite:
+    name: Rust Full-Hypercube (2,1)-Difference & Telescoping Ray Suite (CPU)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Run Clippy
+        run: cargo clippy --all-targets -- -D warnings
+      - name: Run Unit & Theorem Certificate Tests
+        run: cargo test --release

@@ -1,0 +1,35 @@
+[package]
+name = "erdos41"
+version = "1.0.0"
+edition = "2021"
+authors = ["Lucas Parobek <parobek@gmail.com>"]
+description = "Unconditional Diophantine Haar closure, exact (2,1)-difference harmonic conservation, projective Fermat sub-level cones, Lean 4 formal verification, and O(1) bitset-shift CPU+CUDA solver for Erdős Problem #41 ($500 prize: liminf A(x)/x^{1/3} = 0 for infinite B_3 sequences)"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/doublegate/Erdos_41"
+homepage = "https://github.com/doublegate/Erdos_41"
+readme = "README.md"
+keywords = ["erdos", "b3-sequences", "sidon-sets", "bose-chowla", "cuda"]
+categories = ["mathematics", "algorithms", "science"]
+
+[dependencies]
+cudarc = { version = "0.19", default-features = false, features = [
+    "std",
+    "driver",
+    "nvrtc",
+    "dynamic-loading",
+    "cuda-13030",
+] }
+clap = { version = "4.5", features = ["derive"] }
+anyhow = "1.0"
+rayon = "1.10"
+rand = "0.9"
+rand_chacha = "0.9"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+ctrlc = "3.4"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
