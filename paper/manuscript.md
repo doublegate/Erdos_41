@@ -1,5 +1,7 @@
 # Unconditional Resolution of Erdős Problem #41 via Diophantine Haar Sub-Block Variance Closure, Hyperfactorial Sawtooth Asymptotics, and Exact $(2,1){}$-Difference Conservation on Infinite $B _ 3$ Sequences
 
+> **Status (2026-11-03): the claimed resolution of Erdős Problem #41 described below is withdrawn; the problem remains open. See the status note in the repository [README](../README.md) for the specific errors and what still stands.**
+
 **Lucas Parobek**  
 *Independent Researcher · `parobek@gmail.com` · [https://github.com/doublegate/erdos41](https://github.com/doublegate/erdos41)*  
 *October 2026 · MSC 2020: Primary 11B75, 11B13; Secondary 05B10, 11Y55*

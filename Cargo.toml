@@ -3,7 +3,7 @@ name = "erdos41"
 version = "1.0.0"
 edition = "2021"
 authors = ["Lucas Parobek <parobek@gmail.com>"]
-description = "Unconditional Diophantine Haar closure, exact (2,1)-difference harmonic conservation, projective Fermat sub-level cones, Lean 4 formal verification, and O(1) bitset-shift CPU+CUDA solver for Erdős Problem #41 ($500 prize: liminf A(x)/x^{1/3} = 0 for infinite B_3 sequences)"
+description = "Exact (2,1)-difference identities, Lean 4 arithmetic checks, and an O(1) bitset-shift CPU+CUDA solver for Erdős Problem #41 (open; the claimed resolution was withdrawn 2026-11-03)"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/doublegate/Erdos_41"
 homepage = "https://github.com/doublegate/Erdos_41"

@@ -1,5 +1,7 @@
 # How Erdős Problem #41 Was Cracked: A Plain-Language Companion Explainer and Theorem-by-Theorem Architecture Guide
 
+> **Status (2026-11-03): the claimed resolution of Erdős Problem #41 described below is withdrawn; the problem remains open. See the status note in the repository [README](../README.md) for the specific errors and what still stands.**
+
 **Author:** Lucas Parobek (`parobek@gmail.com`) · **Date:** October 27, 2026  
 **Repository:** [https://github.com/doublegate/erdos41](https://github.com/doublegate/erdos41) · **Prize Status:** 500 USD Erdős Bounty (Unconditionally Resolved)
 

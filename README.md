@@ -1,4 +1,15 @@
-# erdos41 — GPU Quantitative Analysis of Erdős Problem #41 (Lower-Envelope Density of Infinite $B _ 3$ Sequences)
+# erdos41 — Exact Identities & Lean 4 Arithmetic Checks for Erdős Problem #41 (Lower-Envelope Density of Infinite B₃ Sequences; open)
+
+> [!WARNING]
+> **Status (2026-11-03): Erdős Problem #41 remains open. The claimed resolution in this repository is withdrawn.**
+>
+> An independent review found that the main argument does not hold:
+> - **The decisive Theorem 4.2 ("Diophantine Haar closure") derives no inequality.** Its claimed variance boost comes from a sawtooth integral that does not depend on the set A. Integer rounding of A(x) changes the relevant functionals only by a relative O(1/m), and cannot multiply them by 1 + κ(K).
+> - **The stated κ(K) has an arithmetic error.** The defining integral gives K ln 2 / (9(1 − 4^(−K))), not K ln 2 / (3(1 − 4^(−K))). The "50-digit" table only evaluates the asserted formula.
+> - **Table 3's "certified optimal B₃ rulers" for k = 3..7 are not B₃ sets** (for example, 1+1+4 = 2+2+2 for k = 3). **Theorem 2.3(3) is false as stated** ({22, 27, 31} is a counterexample).
+> - **The Lean 4 files check arithmetic identities and finite B₃ examples.** No Lean statement asserts the conjecture or its decisive step.
+>
+> What stands: the Section 2 identities other than Theorem 2.3(3), the fact that regular growth forces c = 0, and a constant bound c ≤ 1.1999 that is conditional on an unproved lemma (W(U) ≥ 0). The manuscript, explainer, tables and scripts below are kept unchanged for reference. Read every "closure", "unconditional" or "resolution" claim in them as withdrawn.
 
 A hybrid Rust + CUDA toolkit analyzing **Erdős Problem #41** (500 USD open prize; [erdosproblems.com/41](https://www.erdosproblems.com/41)): prove or disprove that every infinite $B _ 3$ sequence $A \subseteq \mathbb{N}$ (all 3-term sums $a _ i + a _ j + a _ k$ with $i \le j \le k$ distinct) satisfies
 
