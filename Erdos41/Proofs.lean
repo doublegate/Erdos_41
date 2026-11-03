@@ -12,11 +12,16 @@ Paper: "Unconditional Diophantine Haar Closure, Exact (2,1)-Difference Harmonic 
         (Parobek, 2026)
 Repo:  https://github.com/doublegate/Erdos_41
 
-This self-contained Lean 4 module (16 substantive theorems, zero `sorry`s, zero custom axioms)
-machine-checks the discrete algebraic, combinatorial, telescoping, KKT cubic shell-increment
-convexity, discrete Legendre–Fenchel (2,1)-fiber integrality excess, hierarchical binary sub-block
-variance splitting, hyperfactorial sawtooth Abel telescoping, and decidable B₃ witness verification
-identities of [Pa26] (Theorems 2.1 through 2.14 and Section 3).
+Status (2026-11-03): Erdős Problem #41 is open. The manuscript [Pa26] has been withdrawn after an
+independent review found its decisive step (Theorem 4.2, the "Diophantine Haar closure") invalid;
+see the repository README.
+
+This self-contained Lean 4 module (16 theorems, zero `sorry`s, zero custom axioms) proves
+elementary identities and inequalities over `ℕ` (closed by `omega`, `ac_rfl`, `simp`) and checks
+by `decide` that specific finite lists are B₃ sets. No declaration mentions an infinite set, the
+counting function `A(x)`, a liminf, or the closure step, so none of them verifies the
+corresponding manuscript theorem. The descriptions below record the role each lemma was meant to
+play in [Pa26] (Theorems 2.1 through 2.14 and Section 3).
 -/
 
 namespace Erdos41
@@ -63,11 +68,13 @@ theorem erdos_41.variants.bose_chowla_pigeonhole_compressed_span (p g_max : ℕ)
 /-! ## 3. Theorem 2.3(3): Intra-Shell Triple Negative-Cone Exclusivity -/
 
 /--
-**Theorem 2.3(3) (Intra-Shell Negative-Cone Exclusivity):**
-In any dyadic shell `I_r = (2^r-1, 2^r] ∩ ℕ` (`H = 2^r-1 ≥ 2`), every intra-shell
-triple `H + 1 ≤ a_i ≤ a_j < a_k ≤ 2 H` satisfies `a_k < a_i + a_j` and
-`2 ≤ a_i + a_j - a_k ≤ 2 H - 2`, proving that 100% of intra-shell triples lie strictly inside
-the Negative Cone `T_m^-` with `-(2^r-1 - 2) ≤ w_i,j,k ≤ -2`.
+**Theorem 2.3(3) (Intra-Shell Negative-Cone Exclusivity), corrected form:**
+In a dyadic shell `(H, 2H] ∩ ℕ` (`H = 2^(r-1) ≥ 2`), every triple
+`H + 1 ≤ a_i ≤ a_j < a_k ≤ 2 H` satisfies `a_k < a_i + a_j` and `2 ≤ a_i + a_j - a_k ≤ 2 H - 2`,
+so `w = a_k - a_i - a_j` lies in `[-(2H - 2), -2] = [-(2^r - 2), -2]`.
+Correction (2026-11-03): the manuscript stated the stronger range `-(2^(r-1) - 2) ≤ w`, which is
+false: `{22, 27, 31}` in the shell `(16, 32]` gives `w = 31 - 22 - 27 = -18 < -14`. This lemma
+proves only the weaker, correct bound.
 -/
 theorem erdos_41.variants.intrashell_triple_negative_cone_localization (H a_i a_j a_k : ℕ)
     (hH : 2 ≤ H) (hi : H + 1 ≤ a_i) (hij : a_i ≤ a_j) (hjk : a_j < a_k) (hk : a_k ≤ 2 * H) :
@@ -308,10 +315,10 @@ theorem erdos_41.variants.discrete_legendre_fenchel_b3_fiber_excess (B q t : ℕ
 **Theorem 2.14(a) (Exact Quarter-Square Sawtooth Ceiling & Relative Integrality Scaling):**
 For any sub-block count `B ≥ 1` and remainder `0 ≤ t ≤ B`, `4 t(B - t)` plus the single
 ordinary squared difference `|2t - B|^2 = (2t - B)^2 + (B - 2t)^2` (under `ℕ` truncated subtraction) equals `B^2`, so
-`4 t(B - t) ≤ B^2`. Consequently, the relative integrality ratio `(t(B - t))/S^2 = (θ(1 - θ))/μ_1^2`
-is bounded above by `1/(4 μ_1^2)`: it decays as `O(μ_1^-2)` for fixed `B` as `μ_1 → ∈fty`,
-and is strictly of order unity (`Θ(1)`) at the cubic transition scale `W_*(r) ≍ 2^{2r/3}`
-where `μ_1(W_*(r)) = Θ(2^K) = O_K(1)`.
+`4 t(B - t) ≤ B^2`. That integer identity and inequality are all this lemma proves. (In the
+withdrawn manuscript it fed an "integrality excess" step; an independent review found that such
+an excess cannot raise the relevant quadratic coefficient, so the lemma does not support the
+closure argument.)
 -/
 theorem erdos_41.variants.normalized_integrality_excess_bound_b3 (B t : ℕ) (ht : t ≤ B) :
     4 * (t * (B - t)) + (2 * t - B) * (2 * t - B) + (B - 2 * t) * (B - 2 * t) = B * B ∧
@@ -380,11 +387,10 @@ theorem erdos_41.variants.normalized_integrality_excess_bound_b3 (B t : ℕ) (ht
 **Theorem 2.14(b)–(c) (Binary Sub-Block Variance Refinement Identity & Hyperfactorial Sawtooth Abel Step):**
 For any child sub-block occupancies `u, v ∈ ℕ` and integer period `m ≥ 1`,
 `2(u^2 + v^2) = (u + v)^2 + |u - v|^2` (where `|u - v|^2 = (u - v)^2 + (v - u)^2` under `ℕ` truncated subtraction) and
-`m(m + 1) - (m - 1)m = 2m`.
-Dividing the first identity by `2W` proves the Hierarchical Dyadic Sub-Block Variance Refinement
-to the cubic transition scale `W_*(r) ≍ 2^{2r/3}`, while the second telescopes the piecewise
-logarithmic integrals of `{u}(1 - {u})/u` into `2 ln H(M - 1)` and the Glaisher–Kinkelin
-sawtooth constant `C_GK = 2 ln A_GK`.
+`m(m + 1) - (m - 1)m = 2m`, together with `(u + v)^2 ≤ 2(u^2 + v^2)`.
+These elementary identities are all this lemma proves. In particular it does not prove the
+manuscript's sub-block variance refinement or any telescoping of `∫ {u}(1 - {u})/u` into
+`2 ln H(M - 1)`; those were steps of the withdrawn closure argument.
 -/
 theorem erdos_41.variants.binary_subblock_variance_splitting_b3 (u v m : ℕ) (hm : 1 ≤ m) :
     2 * (u * u + v * v) =
@@ -533,8 +539,9 @@ def isCertifiedB3 (A : List ℕ) : Bool :=
   (A.all (fun x => 1 ≤ x)) && isStrictlyIncreasing A && hasNoDuplicates (allOrderedThreeSums A)
 
 /--
-**Theorem 3.1 / Table 1 (Greedy `B_3` Sequence Prefix Verification — OEIS `A004023`):**
-Machine-checked proof that the first 10 terms of the greedy infinite `B_3` sequence (OEIS `A004023`)
+**Theorem 3.1 / Table 1 (Greedy `B_3` Sequence Prefix Verification — OEIS `A096772`):**
+Machine-checked proof that the first 10 terms of the greedy infinite `B_3` sequence (OEIS `A096772`;
+the manuscript's citation of `A004023` was wrong, as that sequence lists indices of prime repunits)
 `[1, 2, 5, 14, 33, 72, 125, 219, 376, 573]` form a valid `B_3` sequence with all
 `C(10 + 2, 3) = 220` ordered 3-sums pairwise distinct.
 -/
@@ -547,8 +554,12 @@ theorem greedyB3Prefix10_is_b3 :
   decide
 
 /--
-**Theorem 3.1 / Table 1 (Optimal Finite `B_3` Ruler Verification for `k ∈ {7, 8, 9, 10}` — OEIS `A051912`):**
-Machine-checked proof that the optimal `B_3` ruler witnesses
+**Theorem 3.1 / Table 1 (Finite `B_3` Witness Verification for `k ∈ {7, 8, 9, 10}`):**
+Machine-checked proof that the following lists are `B_3` sets. Only the `B_3` property is checked.
+Their claimed optimality (minimal span) is not verified here, despite the `optimal` in the names,
+and the manuscript's Table 3 entries for `k = 3..7` are not `B_3` sets at all (for example,
+`[1, 2, 4]` has `1 + 1 + 4 = 2 + 2 + 2`). The manuscript's `A051912` citation is also wrong, since
+that sequence is the greedy `B_3` sequence shifted to start at 0. The witnesses:
 - `A_7^* = [1, 2, 8, 51, 60, 79, 83]` on `{1, ..., 83}` (`L(7) = 82`, `C(9, 3) = 84` sums),
 - `A_8^* = [1, 2, 33, 88, 103, 113, 132, 140]` on `{1, ..., 140}` (`L(8) = 139`, `C(10, 3) = 120` sums),
 - `A_9^* = [1, 7, 38, 40, 119, 180, 201, 218, 227]` on `{1, ..., 227}` (`L(9) = 226`, `C(11, 3) = 165` sums), and
