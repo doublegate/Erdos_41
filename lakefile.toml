@@ -1,6 +1,23 @@
 name = "Erdos41"
 version = "0.1.0"
-defaultTargets = ["Erdos41"]
+defaultTargets = ["Erdos41", "FormalConjectures_41"]
 
+# The google-deepmind/formal-conjectures statement file (FormalConjectures_41.lean)
+# imports `FormalConjecturesUtil`, which in turn needs Mathlib. Pin the exact upstream
+# commit so Mathlib resolves to the revision matching `lean-toolchain` (v4.33.1).
+[[require]]
+name = "formal_conjectures"
+git = "https://github.com/google-deepmind/formal-conjectures"
+rev = "fd57f5d489321515f695ea205913d0ac3289f41c"
+
+# Self-contained proofs: no Mathlib imports, built with `lake --wfail build`.
 [[lean_lib]]
 name = "Erdos41"
+
+# Upstream-format problem statement. It states the open conjecture with `sorry`
+# (as formal-conjectures does), so `sorry` warnings are switched off for this
+# library only, exactly as upstream's own `FormalConjectures` library does.
+[[lean_lib]]
+name = "FormalConjectures_41"
+[lean_lib.leanOptions]
+warn.sorry = false

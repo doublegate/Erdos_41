@@ -19,10 +19,19 @@ jobs:
           curl -sSfL https://github.com/leanprover/elan/releases/download/v4.1.1/elan-x86_64-unknown-linux-gnu.tar.gz | tar xz
           ./elan-init -y --default-toolchain none
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
-      - name: Build Lean 4 proofs with --wfail
+      - name: Cache Lean packages (Mathlib, formal-conjectures)
+        uses: actions/cache@v4
+        with:
+          path: .lake
+          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+      - name: Fetch prebuilt Mathlib oleans
+        run: lake exe cache get
+      - name: Build Lean 4 proofs and formal-conjectures statement with --wfail
         run: lake --wfail build
       - name: Run Kernel Axiom Audit (#print axioms)
         run: lake env lean Erdos41/AxiomCheck.lean
+      - name: Compile ancillary arXiv Lean file
+        run: lake env lean paper/anc/41.lean
 
   python-verification:
     name: Python 3 Diophantine-Haar B3 & Telescoping Ray Certificate Suite
