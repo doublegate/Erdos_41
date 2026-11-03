@@ -214,10 +214,9 @@ where $A(x) = \lvert A \cap [1, x]\rvert$ is the prefix counting function of $A$
 - [scripts/verify_erdos41_theorems.py](scripts/verify_erdos41_theorems.py) — Symbolic SymPy and exact-rational verification suite (16/16 suites)
 - [scripts/verify_phase10_diophantine_haar_b3.py](scripts/verify_phase10_diophantine_haar_b3.py) & [paper/anc/verify_erdos41_diophantine_haar.py](paper/anc/verify_erdos41_diophantine_haar.py) — 50-digit `mpmath` + SymPy verification suites for Theorems 2.13–2.14 and Corollary 2.15
 - [paper/manuscript.pdf](paper/manuscript.pdf), [paper/Companion_Explainer_Erdos41.pdf](paper/Companion_Explainer_Erdos41.pdf), [paper/Supplementary_Verification_Suite_Erdos41.pdf](paper/Supplementary_Verification_Suite_Erdos41.pdf) — Complete publication manuscripts and verification compendium
-- [submissions/README.md](submissions/README.md) — Staged turnkey submission packages for `arXiv.org`, `teorth/erdosproblems`, `google-deepmind/formal-conjectures`, and `We-Solve/research` (held behind pre-publication patent gate `ERDOS-PAT-006`)
 
 ## License
 
 Option A Split Licensing (`v1.0.0`):
 - **Source Code, CUDA Kernels, Python Scripts & Lean 4 Formalization:** Dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE).
-- **Manuscripts, Companion Guides & Figures (`paper/`, `docs/`):** Licensed under [CC BY-NC-ND 4.0](LICENSE-PAPER).
+- **Manuscripts, Companion Guides & Figures (`paper/`, `docs/`):** Licensed under the **[Creative Commons Attribution 4.0 International Public License (`CC BY 4.0`)](LICENSE-PAPER)** ([`paper/LICENSE`](paper/LICENSE)). Pursuant to Section 2(b)(2) of `CC BY 4.0`, no patent or trademark rights are licensed under `CC BY 4.0`.
