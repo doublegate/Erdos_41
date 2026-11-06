@@ -28,6 +28,8 @@ counting.
 
 - **Preprint, not yet refereed.** Every argument was put through independent adversarial review before
   inclusion.
+- The same paper and a supplementary PDF (the ancillary files reproduced verbatim) are public on
+  ResearchGate (November 2026).
 - The paper's final section declares how generative AI was used in the research and the writing.
 - The paper is licensed CC BY 4.0 (`../LICENSE-PAPER`). The code is MIT or Apache-2.0, as for the rest
   of the repository.
