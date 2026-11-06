@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Scope:** this does not resolve Erdős #41.
 
 ### Changed
+- `b3_liminf/paper/`: proofs now end with "q.e.d." rather than amsthm's open box, which readers took for a missing glyph. The text is otherwise unchanged.
 - The README status note no longer says the c ≤ 1.1999 bound depends on an unproved lemma (W(U) ≥ 0). That lemma is now certified (`b3_liminf/`). The README also has a note pointing to the new paper.
 
 ## 2026-11-03
