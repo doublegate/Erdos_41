@@ -1,0 +1,341 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\I}{\mathcal{I}}
+
+\title{A liminf bound for infinite $B_3$ sequences}
+\author{Lucas Parobek}
+\address{Independent researcher}
+\email{parobek@gmail.com}
+\date{November 2026}
+\subjclass[2020]{11B83, 11B13}
+\keywords{$B_h$ sequences, Sidon sequences, counting function, Erd\H{o}s problems}
+
+\begin{document}
+
+\begin{abstract}
+A set $A\subseteq\N$ is a $B_3$ sequence if all sums $a+b+c$ with $a\le b\le c$ in $A$ are distinct.
+Erd\H{o}s asked whether every infinite $B_3$ sequence satisfies $\liminf_{x\to\infty}A(x)x^{-1/3}=0$, where $A(x)=|A\cap[1,x]|$; the question is open.
+The best previously available bound for this liminf appears to be the one inherited from finite $B_3$ sets, namely Green's bound $(7/2)^{1/3}\approx1.518$.
+We prove that every infinite $B_3$ sequence satisfies
+$\liminf_{x\to\infty}A(x)x^{-1/3}\le 3^{1/3}\approx1.442$ by an elementary first-moment argument,
+and, refining the argument with an optimised region of summation, that
+$\liminf_{x\to\infty}A(x)x^{-1/3}\le K^{-1/3}\approx1.199856$, where $K=\frac13\int_0^1\!\int_0^1\frac{dt\,dz}{1+t^3-z^3}$.
+One positivity statement in the refined argument is verified by a computer-assisted interval-arithmetic computation, and the first bound has been formally verified in Lean.
+We show that $K^{-1/3}$ is the best bound obtainable by this method, and that the same method applied to Sidon sequences recovers $\liminf_{x\to\infty}A(x)x^{-1/2}=0$.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+For an integer $h\ge2$, a set $A=\{a_1<a_2<\cdots\}\subseteq\N=\{1,2,\dots\}$ is a \emph{$B_h$ sequence} if every integer has at most one representation as $a_{i_1}+\dots+a_{i_h}$ with $i_1\le\dots\le i_h$. Write $A(x)=|A\cap[1,x]|$.
+For finite $B_h$ sets in $[1,N]$ one has $|A|\ll_h N^{1/h}$, and Bose--Chowla constructions show this order is attained~\cite{BoseChowla}.
+For \emph{infinite} $B_h$ sequences one can ask how small $A(x)/x^{1/h}$ must be infinitely often.
+Erd\H{o}s showed that every infinite Sidon ($B_2$) sequence satisfies $\liminf_{x}A(x)\sqrt{\log x/x}<\infty$~\cite{Stohr,HalberstamRoth}, so in particular $\liminf_x A(x)x^{-1/2}=0$.
+For even $h$ the analogous statement $\liminf_x A(x)x^{-1/h}=0$ was established by Nash for $h=4$~\cite{Nash} and by Chen for all even $h$~\cite{Chen}, with related work of Jia and Helm (see~\cite{Graham} for a survey); explicit constants for even $h$ were recently given by O'Bryant~\cite{OBryant}.
+
+For odd $h$ almost nothing is known. Erd\H{o}s conjectured that every infinite $B_3$ sequence satisfies
+\[
+\liminf_{x\to\infty}\frac{A(x)}{x^{1/3}}=0,
+\]
+which is Problem~41 on Bloom's list of Erd\H{o}s problems~\cite{ErdosProblems}. Helm~\cite{Helm96} proved that no $B_3$ sequence satisfies $A(x)\sim\alpha x^{1/3}$ with $\alpha>0$, and that a $B_3$ sequence with positive liminf must oscillate between dense stretches and long runs of nearly empty intervals; in a companion paper~\cite{Helm96b} he constructed a sequence, not shown to be $B_3$, with positive liminf for which the number of near-solutions $|a+b-c|\le N$ is $O(N)$ along a sequence of $N$, so the direct analogue of Erd\H{o}s's counting argument for Sidon sequences fails (see Section~\ref{sec:limits}). But no constant-level bound on the liminf appears in the literature we know of~\cite{Graham,HalberstamRoth,Helm96,Helm96b,OBryant}. O'Bryant's 2026 paper on the even case~\cite[\S5]{OBryant} likewise records that nothing is known about $\liminf_nA(n)n^{-1/h}$ for general odd $h$ beyond Green's bound\footnote{O'Bryant quotes Green's general bound for $h=2k-1$ \cite[Theorem~23]{Green}, which is asymptotic in $k$; for $h=3$ the relevant bound is Green's $(7/2)^{1/3}$ \cite[Theorem~17]{Green}.}, and that it is not known whether this liminf is $0$ for any odd $h\ge3$~\cite[\S1.2]{OBryant}.
+The only bound available is the one inherited from finite sets: Green~\cite{Green} showed that a $B_3$ set in $[1,N]$ has at most $((7/2)^{1/3}+o(1))N^{1/3}$ elements, which gives $\liminf_x A(x)x^{-1/3}\le\limsup_x A(x)x^{-1/3}\le(7/2)^{1/3}\approx1.5183$.
+
+Our results are as follows.
+
+\begin{theorem}\label{thm:main1}
+Every infinite $B_3$ sequence $A$ satisfies
+\[
+\liminf_{x\to\infty}\frac{A(x)}{x^{1/3}}\le 3^{1/3}\approx1.44225.
+\]
+\end{theorem}
+
+\begin{theorem}\label{thm:main2}
+Every infinite $B_3$ sequence $A$ satisfies
+\[
+\liminf_{x\to\infty}\frac{A(x)}{x^{1/3}}\le K^{-1/3}\approx1.199856,
+\qquad
+K=\frac13\int_0^1\!\!\int_0^1\frac{dt\,dz}{1+t^3-z^3}=0.5789121387\ldots
+\]
+\end{theorem}
+
+The proof of Theorem~\ref{thm:main2} uses one positivity statement (Lemma~\ref{lem:W}) whose verification on a bounded interval is computer-assisted, using interval arithmetic with outward rounding; the code is provided as an ancillary file. The proof of Theorem~\ref{thm:main1} has been checked in the Lean proof assistant (Remark~\ref{rem:lean}). Section~\ref{sec:limits} shows that $K^{-1/3}$ is the best bound this method can give (Proposition~\ref{prop:optimal}), because the region on which it runs has finite volume $K$, and indeed the best bound that its counting hypotheses allow (Proposition~\ref{prop:sharp}), and that the same method applied to Sidon sequences, where the corresponding volume is infinite, gives $\liminf_xA(x)x^{-1/2}=0$.
+
+\begin{remark}
+Neither theorem settles Erd\H{o}s's question. For comparison, Bose--Chowla sets show that \emph{finite} $B_3$ sets in $[1,N]$ can have $(1+o(1))N^{1/3}$ elements, so no argument that applies to finite sets alone can give a constant below $1$. The point of Theorems~\ref{thm:main1} and~\ref{thm:main2} is that the liminf hypothesis supplies information at \emph{every} scale (a lower bound on $A(x)$ for all large $x$), and this allows a bound below Green's finite-set bound $(7/2)^{1/3}$.
+\end{remark}
+
+The basic device, that differences $a_i+a_j-a_k$ with $k\notin\{i,j\}$ are pairwise distinct for a $B_3$ sequence, is classical: it gives the bound $|A|\le(6N)^{1/3}+O(1)$ for finite $B_3$ sets in $[1,N]$ (see~\cite[\S6]{Graham}), and Helm~\cite[Lemma~1]{Helm96} uses it to count triples in windows. What is new here is to sum these distinct values over a region of index triples and to weight the sum against the growth $a_r\lesssim(r/c)^3$ forced by the liminf hypothesis at all scales.
+
+\section{Distinct differences and net multiplicities}
+
+Let $A=\{a_1<a_2<\cdots\}$ be an infinite $B_3$ sequence. For $m\ge2$ let
+\[
+\I_m=\{(i,j,k)\in\{1,\dots,m\}^3:\ i\le j,\ k<j,\ k\ne i\},
+\qquad
+w(i,j,k)=a_i+a_j-a_k .
+\]
+
+\begin{lemma}\label{lem:A}
+The map $w$ is injective on $\I_m$, and $w(i,j,k)\ge2$ for all $(i,j,k)\in\I_m$. Consequently, for every $T\subseteq\I_m$,
+\begin{equation}\label{eq:star}
+\sum_{(i,j,k)\in T}w(i,j,k)\ \ge\ 2+3+\dots+(|T|+1)=\frac{|T|(|T|+3)}{2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $k<j$ we have $a_j-a_k\ge1$, and $a_i\ge1$, so $w\ge2$. If $w(i,j,k)=w(i',j',k')$, then $a_i+a_j+a_{k'}=a_{i'}+a_{j'}+a_k$, and the $B_3$ property gives the multiset equality $\{i,j,k'\}=\{i',j',k\}$. Since $k\notin\{i,j\}$ (because $k\ne i$ and $k<j$), we get $k=k'$, hence $\{i,j\}=\{i',j'\}$, and the normalisations $i\le j$, $i'\le j'$ give $(i,j,k)=(i',j',k')$.
+\end{proof}
+
+For $T\subseteq\I_m$ define the \emph{net multiplicity}
+\[
+W_T(r)=\#\{t\in T: i=r\}+\#\{t\in T: j=r\}-\#\{t\in T: k=r\},
+\]
+so that $\sum_{t\in T}w(t)=\sum_r W_T(r)\,a_r$.
+
+\begin{lemma}\label{lem:B}
+$|\I_m|=\frac{m(m-1)(2m-1)}{6}$, and $W_{\I_m}(r)=r^2-m$ for $1\le r\le m$.
+\end{lemma}
+
+\begin{proof}
+Fix $r$. As the first coordinate: if $j=r$, then $k\in\{1,\dots,r-1\}$ ($r-1$ triples); if $j>r$, then $k\in\{1,\dots,j-1\}\setminus\{r\}$ ($j-2$ triples). As the second coordinate: if $i<r$, then $k\in\{1,\dots,r-1\}\setminus\{i\}$ ($r-2$ triples for each of $r-1$ values of $i$); if $i=r$, then $k\in\{1,\dots,r-1\}$ ($r-1$ triples); in total $(r-1)^2$. As the third coordinate: $j>r$ and $i\in\{1,\dots,j\}\setminus\{r\}$ ($j-1$ triples for each $j$). Hence
+\[
+W_{\I_m}(r)=(r-1)+\sum_{j=r+1}^m(j-2)+(r-1)^2-\sum_{j=r+1}^m(j-1)=r(r-1)-(m-r)=r^2-m .
+\]
+For each $j$ there are $j$ choices of $i\le j$ and $j-1$ choices of $k<j$, of which $j-1$ pairs have $k=i$; so $|\I_m|=\sum_{j=1}^m(j-1)^2$.
+\end{proof}
+
+\begin{lemma}\label{lem:C}
+If $\liminf_{x\to\infty}A(x)x^{-1/3}>c>0$, then there is $r_0$ such that $a_r<(r/c)^3$ for all $r\ge r_0$.
+\end{lemma}
+
+\begin{proof}
+Choose $x_0$ with $A(x)>cx^{1/3}$ for $x\ge x_0$ and $r_0$ with $a_{r_0}\ge x_0$. For $r\ge r_0$, $r=A(a_r)>c\,a_r^{1/3}$.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main1}}
+
+Suppose $\liminf_x A(x)x^{-1/3}>c$ and let $r_0$ be as in Lemma~\ref{lem:C}. Take $T=\I_m$ with $m>r_0^2$. By Lemma~\ref{lem:B}, the coefficient $r^2-m$ is negative for $r<\sqrt m$, and $a_r>0$, so these terms may be dropped; every remaining index satisfies $r\ge\sqrt m>r_0$. Hence
+\[
+\sum_{t\in\I_m}w(t)\le\sum_{\sqrt m\le r\le m}(r^2-m)\,a_r\le c^{-3}\sum_{r\le m}r^5=(1+o(1))\frac{m^6}{6c^3}.
+\]
+On the other hand $|\I_m|=(1+o(1))m^3/3$, so~\eqref{eq:star} gives $\sum_{t\in\I_m}w(t)\ge(1+o(1))m^6/18$. Therefore $c^3\le3+o(1)$, and letting $m\to\infty$, $c\le3^{1/3}$. As this holds for every $c$ below the liminf, the theorem follows (and the liminf is in particular finite). \qed
+
+\begin{remark}\label{rem:lean}
+Theorem~\ref{thm:main1}, together with the forms of Lemmas~\ref{lem:A}--\ref{lem:C} that its proof uses (in Lean, positivity $w\ge1$ and the summed form of Lemma~\ref{lem:B}), has been formally verified in Lean~4 (v4.33.1) with Mathlib. The formal statement is the equivalent form: for every infinite $B_3$ set $A$ of positive integers and every real $d>3$ there are arbitrarily large integers $x$ with $A(x)^3<d\,x$. A second statement gives the bound for Mathlib's $\liminf$, together with the coboundedness of $A(x)x^{-1/3}$ (derived from the fact that $A(x)x^{-1/3}\le2$ for infinitely many $x$); without it, Mathlib's convention for the $\liminf$ of a function tending to $+\infty$ would make the inequality trivial. The development also proves that every $B_3$ sequence satisfies the window condition (R) of Section~\ref{sec:limits}, and that the sequence form of Theorem~\ref{thm:main1} holds for every (R)-sequence (in Lean, (R) is stated in finitary form over $\I_m$ for all $m$); it proves the bound $S^{(N)}\le2N+1$ for Helm's count, stated in Section~\ref{sec:limits}, for every $B_3$ set; and it shows that the powers of $4$ form an infinite $B_3$ set, so the hypotheses can be met. It uses no axioms beyond the three standard ones of Lean's logic (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}), and the source is provided as an ancillary file (directory \texttt{lean/}). Theorem~\ref{thm:main2} has not been formalized.
+\end{remark}
+
+\section{Proof of Theorem~\ref{thm:main2}}\label{sec:thm2}
+
+\subsection{The region}
+For $L\ge1$ let
+\[
+\Omega_L=\{(X,Y,Z)\in\R^3:\ 0<X\le Y\le L,\ 0<Z<Y,\ X^3+Y^3-Z^3\le1\},
+\]
+and let $T_m=\{(i,j,k)\in\I_{\lceil Lm\rceil}:\ (i,j,k)/m\in\Omega_L\}$. Write
+\[
+\Vol_L=\Vol(\Omega_L),\qquad S_L=\iiint_{\Omega_L}(X^3+Y^3-Z^3)\,dX\,dY\,dZ,
+\]
+and let $W_L(U)=W_X(U)+W_Y(U)-W_Z(U)$, where $W_X(U),W_Y(U),W_Z(U)$ are the areas of the slices of $\Omega_L$ by the planes $X=U$, $Y=U$, $Z=U$; for $U>L$ all three slices are empty and $W_L(U)=0$. Note that $\int_0^L W_L(U)\,U^3\,dU=S_L$.
+
+\subsection{Discretisation}
+
+\begin{lemma}\label{lem:D}
+With constants depending only on $L$:
+\begin{enumerate}
+\item $|T_m|=\Vol_L\,m^3+O(m^2)$;
+\item $W_{T_m}(r)=m^2W_L(r/m)+O(m)$ uniformly in $r$;
+\item $\sum_{t\in T_m}(i^3+j^3-k^3)=S_L\,m^6+O(m^5)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+$\Omega_L$ is bounded and defined by finitely many polynomial inequalities of degree at most $3$; hence every line parallel to a coordinate axis meets $\Omega_L$, each of its coordinate projections, and each of its axis-parallel planar slices, in a bounded number of intervals. Explicitly, the projections of $\Omega_L$ to the $(X,Y)$-, $(Y,Z)$- and $(X,Z)$-planes are $\{0<X\le Y\le L,\ X<1\}$, $\{0<Z<Y\le L,\ Y^3-Z^3<1\}$ and $\{0<X\le Z<L,\ X<1\}\cup\{0<Z<X\le L,\ 2X^3\le1+Z^3\}$, and every axis-parallel line meets each of these in at most two intervals; the planar slices are described in the same way. Davenport's lemma~\cite{Davenport} therefore gives (1) for the lattice points of $m\Omega_L$, and for each planar slice a lattice count equal to $m^2$ times its area up to $O(m)$, uniformly in the slicing coordinate. Excluding the diagonal $k=i$ removes $O(m)$ points per slice and $O(m^2)$ in total; this gives (1) and (2), since $W_{T_m}(r)$ is a signed sum of three slice counts. For (3), write $f(X,Y,Z)=X^3+Y^3-Z^3$, which is bounded with bounded gradient on $\Omega_L$; comparing $\sum_{p\in\Z^3\cap m\Omega_L}f(p/m)$ with $m^3\int_{\Omega_L}f$ cube by cube gives an error $O(m^3\cdot m^{-1})$ from cubes inside $m\Omega_L$ and $O(m^2)$ from the $O(m^2)$ cubes meeting the boundary. Multiplying by $m^3$ gives (3) for all lattice points of $m\Omega_L$; excluding the diagonal $k=i$ removes $O(m^2)$ points, each contributing $O(m^3)$, which changes the sum by $O(m^5)$.
+\end{proof}
+
+\subsection{Positivity of the net density}
+
+\begin{lemma}\label{lem:W}
+For every $L\ge2$ and every $U\in(0,L]$ we have $W_L(U)>0$.
+\end{lemma}
+
+\begin{proof}
+\emph{Case $U\ge1$.} Here $W_X(U)=0$, since $(U,Y,Z)\in\Omega_L$ forces $U^3<1$. For $U\in[1,(L^3-1)^{1/3}]$ the slices are $\{0<X<1,\ (U^3-s)^{1/3}<Z<U\}$ and $\{0<X<1,\ U<Y<(U^3+s)^{1/3}\}$ with $s=1-X^3$. (In both slices $X<1$ automatically: in the $Y$-slice $X^3\le1-U^3+Z^3<1$ because $Z<U$, and in the $Z$-slice $X^3\le1+U^3-Y^3<1$ because $Y>U$; in particular $X\le Y$ holds automatically.) Hence
+\[
+W_Y(U)-W_Z(U)=\int_0^1\Bigl(2U-(U^3-s)^{1/3}-(U^3+s)^{1/3}\Bigr)dX>0
+\]
+by strict concavity of $t\mapsto t^{1/3}$. For $U>(L^3-1)^{1/3}$ the $Z$-slice is further truncated by $Y\le L$, which only decreases $W_Z(U)$.
+
+\emph{Reduction for $U<1$.} $W_Y(U)$ does not depend on $L$. $W_Z(U)$ does not depend on $L$ once $L\ge2^{1/3}$, because on the $Z$-slice $Y<(U^3+1-X^3)^{1/3}\le2^{1/3}$. $W_X(U)$ is non-decreasing in $L$ (its integrand is non-negative). Hence $W_L(U)\ge W_2(U)$ for all $L\ge2$, and it suffices to show $W_2>0$ on $(0,1)$.
+
+\emph{Computer-assisted part.} Partition $(0,1)$ into $400$ cells $[u_0,u_1]$ of equal length. On a cell:
+$W_X$ is non-increasing in $U$, so $W_X(U)\ge W_X(u_1)$;
+the $Y$-slice contains $\{0<X\le u_0,\ 0<Z<u_0,\ Z^3\ge X^3+u_1^3-1\}$;
+the $Z$-slice is contained in $\{0<X<1,\ \max(X,u_0)<Y<(u_1^3+1-X^3)^{1/3}\}$.
+Each resulting one-dimensional integrand is monotone on the pieces over which it is integrated (the integrand of $W_X$ increases up to $Y=(1-u_1^3)^{1/3}$ and decreases afterwards; the breakpoint is enclosed in an interval and the enclosed sliver is discarded, which only decreases the lower bound), so Riemann sums at the appropriate endpoints, with $3000$ nodes per integral, give rigorous one-sided bounds. All arithmetic is carried out in interval arithmetic with outward rounding (\texttt{mpmath.iv}, $40$ decimal digits), every lower bound is the lower endpoint of an enclosure, and each cell is accepted only if its lower bound is certified strictly positive (an undecided comparison counts as failure). The computation certifies
+\[
+W_2(U)\ \ge\ 0.27270\qquad\text{for all }U\in(0,1)
+\]
+and takes about five minutes on one core. The code is the ancillary file \texttt{certify\_w\_directed.py}; the run above is \texttt{python certify\_w\_directed.py 3000 400} (the number of Riemann nodes per integral, then the number of cells). Its default arguments ($1500$ nodes, $200$ cells) certify the slightly weaker bound $W_2\ge0.27222$ in about a minute.
+\end{proof}
+
+\subsection{Conclusion of the proof}
+Suppose $\liminf_x A(x)x^{-1/3}>c$, let $r_0$ be as in Lemma~\ref{lem:C}, and fix $L\ge2$. For $r\ge r_0$ we have $W_{T_m}(r)\,a_r\le W_{T_m}(r)^+(r/c)^3$, while the indices $r<r_0$ contribute $O(m^2)$, with a constant that depends on $A$ (through $\max_{r<r_0}a_r$) but not on $m$. Hence
+\[
+\sum_{t\in T_m}w(t)\le c^{-3}\sum_r W_{T_m}(r)^+r^3+O(m^2).
+\]
+By Lemmas~\ref{lem:W} and~\ref{lem:D}(2), and since $W_L=0$ beyond $L$, the negative parts satisfy $W_{T_m}(r)^-=O(m)$, so replacing $W_{T_m}(r)^+$ by $W_{T_m}(r)$ above changes the sum by only $O(m^5)$. By Lemma~\ref{lem:D}(3),
+\[
+\sum_rW_{T_m}(r)\,r^3=\sum_{t\in T_m}(i^3+j^3-k^3)=S_Lm^6+O(m^5).
+\]
+Combining these with~\eqref{eq:star} and Lemma~\ref{lem:D}(1),
+\[
+\tfrac12\Vol_L^2\,m^6\,(1+o(1))\ \le\ \sum_{t\in T_m}w(t)\ \le\ c^{-3}S_L\,m^6+O(m^5).
+\]
+Letting $m\to\infty$,
+\[
+c^3\le\frac{2S_L}{\Vol_L^2}\qquad(L\ge2).
+\]
+Finally let $L\to\infty$. The regions $\Omega_L$ increase to $\Omega_\infty=\bigcup_L\Omega_L$ and the integrand $X^3+Y^3-Z^3$ is positive on them, so $\Vol_L\uparrow\Vol(\Omega_\infty)$ and $S_L\uparrow S_\infty$ by monotone convergence. In the coordinates $w=X^3+Y^3-Z^3$, $t=X/Y$, $z=Z/Y$, the region $\Omega_\infty$ corresponds to $(0,1]\times(0,1]\times(0,1)$ and $dX\,dY\,dZ=\frac{dw\,dt\,dz}{3(1+t^3-z^3)}$, a density independent of $w$. Hence $\Vol(\Omega_\infty)=K$ and $S_\infty=\int w=K/2$, and $c^3\le1/K$. \qed
+
+\begin{remark}
+Numerically, $2S_L/\Vol_L^2$ equals $2.1193$, $1.8652$ and $1.7403$ for $L=2,5,50$, tending to $1/K=1.72738\ldots$; the corresponding bounds for the liminf are $1.2845$, $1.2310$ and $1.2028$. The constant $K$ was evaluated by adaptive quadrature in multiple precision (ancillary file \texttt{numeric\_W\_and\_K.py}) and the value was reproduced independently to ten digits: $K=0.5789121387\ldots$, so $K^{-1/3}=1.1998559643\ldots$.
+\end{remark}
+
+\section{Limits of the method, and Sidon sequences}\label{sec:limits}
+
+\subsection{The constant \texorpdfstring{$K^{-1/3}$}{K\textasciicircum(-1/3)} is optimal for the method}
+The argument of Section~\ref{sec:thm2} works for any bounded region $\Omega$ of the type in Lemma~\ref{lem:D}; write $W_\Omega$ for its net slice density, defined as $W_L$ is for $\Omega_L$. Without Lemma~\ref{lem:W} one keeps $W^+$: by Lemma~\ref{lem:D}(2), $W_{T_m}(r)^+=m^2W_\Omega(r/m)^++O(m)$, so $\sum_rW_{T_m}(r)^+r^3=m^6\int W_\Omega^+(U)\,U^3\,dU+o(m^6)$ by Riemann integrability of $W_\Omega^+$, and the argument gives
+\[
+c^3\le\frac{2\int W_\Omega^+(U)\,U^3\,dU}{\Vol(\Omega)^2},
+\]
+No choice of $\Omega$ beats Theorem~\ref{thm:main2}.
+
+\begin{proposition}\label{prop:optimal}
+Let $C=\{(X,Y,Z):0<X\le Y,\ 0<Z<Y\}$ and $w=X^3+Y^3-Z^3$. For every bounded measurable $\Omega\subseteq C$ of positive volume,
+\[
+\int_\Omega w\ \ge\ \frac{\Vol(\Omega)^2}{2K},\qquad\text{hence}\qquad \frac{2\int W_\Omega^+(U)\,U^3\,dU}{\Vol(\Omega)^2}\ \ge\ \frac1K.
+\]
+\end{proposition}
+
+\begin{proof}
+By the change of variables at the end of Section~\ref{sec:thm2}, $\Vol\{p\in C:w(p)\le t\}=Kt$ for $t>0$. Let $V=\Vol(\Omega)$, $t=V/K$ and $B=\{p\in C:w(p)\le t\}$, so that $\Vol(B)=V$. Since $w\le t$ on $B$ and $w>t$ on $C\setminus B$,
+\[
+\int_\Omega w-\int_Bw=\int_{\Omega\setminus B}w-\int_{B\setminus\Omega}w\ \ge\ t\bigl(\Vol(\Omega\setminus B)-\Vol(B\setminus\Omega)\bigr)=0,
+\]
+and $\int_Bw=\int_0^tsK\,ds=Kt^2/2=V^2/(2K)$. Finally $\int W_\Omega^+U^3\ge\int W_\Omega U^3=\int_\Omega w$, by the identity of Section~\ref{sec:thm2}.
+\end{proof}
+
+So the bound $K^{-1/3}$ is exactly what this first-moment method can give: the method uses only that the values $a_i+a_j-a_k$ ($k<j$, $k\neq i$) are distinct positive integers and that $0<a_r\le(r/c)^3$, and the sublevel sets of $w$ in $C$ have volume proportional to the level, $\Vol\{w\le t\}=Kt$, the constant $K$ being the volume of $C\cap\{w\le1\}$. Pointwise lower bounds on $a_r$ do not help either: given $\lambda r^3\le a_r\le c^{-3}r^3$ (for instance any $\lambda<2/7$, for large $r$, from Green's bound), the largest possible value of $\sum_rW(r)a_r$ is $c^{-3}\sum W^+r^3-\lambda\sum W^-r^3\ge c^{-3}\sum Wr^3$. Settling Erd\H{o}s's question along these lines would need information about the sequence beyond pointwise bounds on $a_r$.
+
+\subsection{The constant is also optimal for the hypotheses}
+The previous proposition concerns the method; the hypotheses themselves give no more. Call a strictly increasing sequence of positive integers an \emph{(R)-sequence} if
+\[
+\#\{(i,j,k):\ i\le j,\ k<j,\ k\neq i,\ a_i+a_j-a_k\le H\}\ \le\ H\qquad\text{for every integer }H\ge1.\tag{R}
+\]
+By Lemma~\ref{lem:A}, every $B_3$ sequence is an (R)-sequence. The proof of Theorem~\ref{thm:main2} uses the $B_3$ property only through~\eqref{eq:star}, and to leading order (R) suffices: since the values $w(t)$ are integers, listing any set $T$ of these triples by increasing $w$ shows that the $n$-th smallest value is at least $n$, so $\sum_{t\in T}w(t)\ge|T|(|T|+1)/2$. Hence every (R)-sequence satisfies $\liminf_xA(x)x^{-1/3}\le K^{-1/3}$.
+
+\begin{proposition}\label{prop:sharp}
+For every $\gamma>K$ there is $r_0$ such that $a_r=\lceil\gamma(r+r_0)^3\rceil$ is an (R)-sequence. Since $A(x)x^{-1/3}\to\gamma^{-1/3}$, the supremum of $\liminf_xA(x)x^{-1/3}$ over (R)-sequences is exactly $K^{-1/3}$.
+\end{proposition}
+
+\begin{proof}
+Let $\mathcal L(t)$ be the number of $(i,j,k)\in\Z^3$ with $1\le i\le j$, $1\le k<j$ and $i^3+j^3-k^3\le t$. We first show that for $t\ge1$ and $0<\varepsilon\le1$,
+\[
+\mathcal L(t)\le K(1+\varepsilon)t+\tfrac12\bigl((1+\varepsilon)t\bigr)^{2/3}+\bigl(\sqrt{t/3}+1\bigr)\,t^{1/3}\,(\varepsilon^{-1}+1).
+\]
+Map a counted triple $p=(i,j,k)$ to the cube $Q_p=[i-1,i]\times[j-1,j]\times[k-1,k]$; these cubes have disjoint interiors. For $q=(X,Y,Z)\in Q_p$ we have $0\le X\le Y+1$ and $0\le Z\le Y$. Moreover $w(q)\le i^3+j^3-(k-1)^3\le t+3k^2$. If $3k^2\le\varepsilon t$, then $Q_p$ lies in $\{0\le X\le Y+1,\ 0\le Z\le Y,\ w\le s\}$ with $s=(1+\varepsilon)t$. The part of this region with $X\le Y$ has volume $Ks$ (Section~\ref{sec:thm2}). On the rest, $w\ge X^3>Y^3$, so $Y<s^{1/3}$, and its volume is at most $\int_0^{s^{1/3}}Y\,dY=s^{2/3}/2$. If instead $3k^2>\varepsilon t$, then $3k^2(j-k)\le j^3-k^3<t$, so $j-k<1/\varepsilon$; also $j^3-(j-1)^3\le t$ gives $j<\sqrt{t/3}+1$, and $i\le t^{1/3}$. Taking $\varepsilon=t^{-1/12}$ gives $\mathcal L(t)\le Kt+O(t^{11/12})$.
+
+Now let $r'=r+r_0$. Since $\gamma r'^3\le a_r<\gamma r'^3+1$, every counted triple has $w>\gamma(i'^3+j'^3-k'^3)-1$, so the count in (R) is at most $\mathcal L((H+1)/\gamma)$. Since $K/\gamma<1$, this is at most $H$ for all $H\ge H^*(\gamma)$, where $H^*$ does not depend on $r_0$. For smaller $H$ the count is $0$ once $\gamma(r_0+1)^3-1\ge H^*$, because $w>\gamma(r_0+1)^3-1$ for every triple. Finally $\gamma((r'+1)^3-r'^3)\ge7\gamma>1$, so the sequence is strictly increasing, and $A(x)=(x/\gamma)^{1/3}+O(r_0+1)$.
+\end{proof}
+
+Thus any improvement of Theorem~\ref{thm:main2} must use information about the sequence beyond (R), integrality, monotonicity and the liminf hypothesis: for example window counts away from $[1,H]$, triples with $k>j$, or the exact distinctness of $3$-sums. Whether the supremum is attained is open. Numerically $\lceil Kr^3\rceil$ appears to be an (R)-sequence: (R) holds for it for every $H\le2\cdot10^5$, and $Kt-\mathcal L(t)\ge3.6$ at every jump of $\mathcal L$ up to $t=2\cdot10^6$. By the argument above with $r_0=0$, attainment would follow from the lower-order bound $Kt-\mathcal L(t)\ge1$ for $t\ge2/K$, which we have not proved.
+
+Proposition~\ref{prop:sharp} has a precursor of a different kind. Helm~\cite{Helm96b} considered the two-sided count
+\[
+S^{(N)}=\#\{(a,b,c)\in A^3:\ a\le b<c,\ |a+b-c|\le N\}
+\]
+(Helm writes $b\le c$, but his proof treats only $b<c$; the triples $(a,b,b)$ with $a\le N$ would make the count infinite). For a $B_3$ sequence the values $a+b-c$ of these triples are distinct, so $S^{(N)}\le2N+1$. Helm constructed a sequence (not shown to be $B_3$) with $\liminf_xA(x)x^{-1/3}>0$ and $\liminf_NS^{(N)}/N<\infty$. So Erd\H{o}s's conjecture cannot be proved by showing that every sequence with positive liminf has $S^{(N)}/N\to\infty$. Whether some sequence with positive liminf has $\limsup_NS^{(N)}/N<\infty$ is left open there~\cite{Helm96b}; a negative answer would prove the conjecture, since $S^{(N)}\le2N+1$ for every $B_3$ sequence. The two counts differ: in $S^{(N)}$ the subtracted element is the largest of the three, whereas (R) counts values $a_i+a_j-a_k$ with $a_k<a_j$, and only those in $[1,H]$. Proposition~\ref{prop:sharp} controls (R) at every $H$ and identifies the extremal constant, but it says nothing about $S^{(N)}$, so it does not answer Helm's question. (For the sequences of Proposition~\ref{prop:sharp}, $S^{(N)}$ is even infinite once $N\ge\gamma+1$, because $x^3+y^3-z^3=-1$ for $(x,y,z)=(9t^3-1,\,9t^4-3t,\,9t^4)$.)
+
+\subsection{Sidon sequences}
+For a Sidon sequence the differences $a_j-a_i$ ($i<j$) are distinct positive integers, with net multiplicity $2r-m-1$. The argument of Theorem~\ref{thm:main1} then gives only $\liminf_xA(x)x^{-1/2}\le(17/12)^{1/2}$. The argument of Section~\ref{sec:thm2} does better, and here the volume is infinite. Take
+\[
+\Omega_L=\{(X,Y):0<X<Y\le L,\ Y^2-X^2\le1\},\qquad W_L(U)=W_Y(U)-W_X(U),
+\]
+where $W_X(U)=\min(L,\sqrt{1+U^2})-U$ and $W_Y(U)=U-\sqrt{\max(0,U^2-1)}$ are the lengths of the slices $X=U$ and $Y=U$. With the analogue $a_r<(r/c)^2$ of Lemma~\ref{lem:C}, the two-dimensional analogue of Lemma~\ref{lem:D} and the Riemann-sum step above ($W_L^+$ is continuous on $[0,L]$ apart from a jump at $U=L$), and using only $a_r>0$ (no analogue of Lemma~\ref{lem:W} is needed), one gets $c^2\le2\int W_L^+(U)\,U^2\,dU/\Vol(\Omega_L)^2$ for every $L$. For $L\ge2$:
+\begin{itemize}
+\item $W_L(U)<0$ exactly for $U<1/\sqrt3$: for $U\le1$, $W_L(U)=2U-\sqrt{1+U^2}$; for $1<U\le L$, $W_L(U)\ge2U-\sqrt{U^2-1}-\sqrt{U^2+1}>0$ by concavity of the square root, the truncation at $L$ only increasing $W_L$.
+\item Hence $\int W_L^+U^2=S_L+E$, where $S_L=\iint_{\Omega_L}(Y^2-X^2)$ and $E=\int_0^{1/\sqrt3}(\sqrt{1+U^2}-2U)\,U^2\,dU=0.01467\ldots$ does not depend on $L$.
+\item $S_L\le\Vol(\Omega_L)$, since $Y^2-X^2\le1$ on $\Omega_L$, while $\Vol(\Omega_L)=\frac12+\int_1^L(Y-\sqrt{Y^2-1})\,dY=\frac12\log L+O(1)\to\infty$.
+\end{itemize}
+Therefore $c^2\le2(\Vol(\Omega_L)+E)/\Vol(\Omega_L)^2\to0$, and $\liminf_xA(x)x^{-1/2}=0$. Numerically, the sharper bound on $c$ obtained before using $S_L\le\Vol(\Omega_L)$,
+\[
+c\le\frac{\sqrt{2(S_L+E)}}{\Vol(\Omega_L)},
+\]
+equals $0.980$, $0.735$, $0.578$, $0.434$ and $0.318$ for $L=2,10,10^2,10^4,10^8$. This recovers Erd\H{o}s's theorem only qualitatively: it gives $\liminf_xA(x)x^{-1/2}=0$, not his rate
+\[
+\liminf_{x\to\infty}A(x)\sqrt{\log x/x}<\infty.
+\]
+ It also explains why the $B_3$ case stops at $K^{-1/3}$: the limiting region there has finite volume $K$ (Proposition~\ref{prop:optimal}), while the Sidon region's volume grows without bound.
+
+For odd $h$, the pairing arguments behind the even-$h$ results are not available~\cite{OBryant}, and we are not aware of any previous bound for $\liminf_xA(x)x^{-1/3}$ below Green's finite-set bound $(7/2)^{1/3}$.
+
+\section*{Acknowledgments}
+The author thanks the Penn State University Libraries for supplying a copy of~\cite{Helm96b}.
+
+\section*{Declaration of generative AI and AI-assisted technologies}
+Generative AI was used in the initial research as well as editing the initial writing draft copies. Anthropic's Claude Opus~5.5 was used to search various literature, to co-develop and test the arguments of Sections~2--5, to write the interval-arithmetic certificate for Lemma~\ref{lem:W} and the Lean formalization, to carry out independent adversarial reviews of every argument, and to assist in formatting / typesetting the manuscript. Google's Gemini~4 Argon was used for earlier exploratory work on this problem that preceded the present argument. The author selected the problem, directed the work, obtained the primary literature, required every claim to pass an independent adversarial review before inclusion, guided follow-ups to the draft copies, and takes full responsibility for the content of the paper. The computer-assisted step and the Lean formalization are supplied as ancillary files, so that they can be checked independently of any AI tool.
+
+\begin{thebibliography}{99}
+
+\bibitem{BoseChowla}
+R.~C. Bose and S.~Chowla, \emph{Theorems in the additive theory of numbers}, Comment.\ Math.\ Helv.\ \textbf{37} (1962/63), 141--147.
+
+\bibitem{Chen}
+S.~Chen, \emph{On Sidon sequences of even orders}, Acta Arith.\ \textbf{64} (1993), 325--330.
+
+\bibitem{Davenport}
+H.~Davenport, \emph{On a principle of Lipschitz}, J.~London Math.\ Soc.\ \textbf{26} (1951), 179--183; corrigendum, ibid.\ \textbf{39} (1964), 580.
+
+\bibitem{ErdosProblems}
+T.~F. Bloom, \emph{Erd\H{o}s Problems}, Problem 41, \url{https://www.erdosproblems.com/41}.
+
+\bibitem{Graham}
+S.~W. Graham, \emph{$B_h$ sequences}, in: Analytic Number Theory, Vol.~1 (Allerton Park, 1995), Progr.\ Math.\ \textbf{138}, Birkh\"auser, Boston, 1996, 431--449.
+
+\bibitem{Green}
+B.~Green, \emph{The number of squares and $B_h[g]$ sets}, Acta Arith.\ \textbf{100} (2001), 365--390.
+
+\bibitem{HalberstamRoth}
+H.~Halberstam and K.~F. Roth, \emph{Sequences}, 2nd ed., Springer, New York, 1983.
+
+\bibitem{Helm96}
+M.~Helm, \emph{On the distribution of $B_3$-sequences}, J.~Number Theory \textbf{58} (1996), 124--129.
+
+\bibitem{Helm96b}
+M.~Helm, \emph{On $B_3$-sequences}, in: Analytic Number Theory, Vol.~2 (Allerton Park, 1995), Progr.\ Math.\ \textbf{139}, Birkh\"auser, Boston, 1996, 465--469.
+
+\bibitem{Nash}
+J.~C.~M. Nash, \emph{On $B_4$-sequences}, Canad.\ Math.\ Bull.\ \textbf{32} (1989), 446--449.
+
+\bibitem{OBryant}
+K.~O'Bryant, \emph{On the Thickness of Infinite Generalized Sidon Sets, II}, arXiv:2607.23795 (2026).
+
+\bibitem{Stohr}
+A.~St\"ohr, \emph{Gel\"oste und ungel\"oste Fragen \"uber Basen der nat\"urlichen Zahlenreihe.\ II}, J.~Reine Angew.\ Math.\ \textbf{194} (1955), 111--140.
+
+\end{thebibliography}
+\end{document}

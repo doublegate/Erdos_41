@@ -4,7 +4,19 @@ All notable changes to **Erdos_41** (`erdos41`) are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2026-11-03
+## [Unreleased] - 2026-11-06
+
+### Added
+- **`b3_liminf/`: the paper "A liminf bound for infinite B₃ sequences" (9 pages), with its ancillary files.**
+  - **Results:** liminf A(x)/x^(1/3) ≤ 3^(1/3) for every infinite B₃ sequence (Theorem 1, formally verified in Lean 4), and ≤ K^(−1/3) ≈ 1.199856 (Theorem 2, with Lemma 5 certified in interval arithmetic by `certify_w_directed.py`).
+  - **Section 5:** shows the method and its hypotheses are sharp, and compares the result with Helm's 1996 barrier.
+  - **Lean project** (`b3_liminf/lean/`, Lean and Mathlib v4.33.1): covers Theorem 1, the window condition (R), S^(N) ≤ 2N + 1, and non-vacuity. `lake --wfail build` is clean; every audited result uses only `propext`, `Classical.choice` and `Quot.sound`.
+  - **Scope:** this does not resolve Erdős #41.
+
+### Changed
+- The README status note no longer says the c ≤ 1.1999 bound depends on an unproved lemma (W(U) ≥ 0). That lemma is now certified (`b3_liminf/`). The README also has a note pointing to the new paper.
+
+## 2026-11-03
 
 ### Withdrawn
 - The claim that this repository resolves Erdős Problem #41 is **withdrawn**: the problem remains open. An independent review on 2026-11-03 found the main argument invalid. The README status note gives the specific errors and lists what still stands.

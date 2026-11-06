@@ -9,7 +9,15 @@
 > - **Table 3's "certified optimal B₃ rulers" for k = 3..7 are not B₃ sets** (for example, 1+1+4 = 2+2+2 for k = 3). **Theorem 2.3(3) is false as stated** ({22, 27, 31} is a counterexample).
 > - **The Lean 4 files check arithmetic identities and finite B₃ examples.** No Lean statement asserts the conjecture or its decisive step.
 >
-> What stands: the Section 2 identities other than Theorem 2.3(3), the fact that regular growth forces c = 0, and a constant bound c ≤ 1.1999 that is conditional on an unproved lemma (W(U) ≥ 0). The manuscript, explainer, tables and scripts below are kept unchanged for reference. Read every "closure", "unconditional" or "resolution" claim in them as withdrawn.
+> What stands: the Section 2 identities other than Theorem 2.3(3), the fact that regular growth forces c = 0, and the constant bound c ≤ 1.1999. That bound was conditional on the unproved lemma W(U) ≥ 0 when this note was written. It is now proved; see the new paper below. The manuscript, explainer, tables and scripts below are kept unchanged for reference. Read every "closure", "unconditional" or "resolution" claim in them as withdrawn.
+<!-- separates the two alerts -->
+> [!NOTE]
+> **New paper (2026-11): [*A liminf bound for infinite B₃ sequences*](./b3_liminf/paper/b3_liminf.pdf)** ([`b3_liminf/`](./b3_liminf/)).
+>
+> - **Results:** every infinite B₃ sequence has liminf A(x)/x^(1/3) ≤ 3^(1/3) ≈ 1.442 (formally verified in Lean 4) and ≤ K^(−1/3) ≈ 1.199856, where K = (1/3)∫₀¹∫₀¹ dt dz/(1 + t³ − z³).
+> - **The computer-assisted step:** the positivity lemma behind the second bound is certified by an interval-arithmetic computation, which is supplied.
+> - **Limits:** the paper shows that K^(−1/3) is the limit of the method.
+> - **Status:** it improves the best known constant. It does **not** resolve Erdős #41, which asks for liminf = 0.
 
 A hybrid Rust + CUDA toolkit analyzing **Erdős Problem #41** (500 USD open prize; [erdosproblems.com/41](https://www.erdosproblems.com/41)): prove or disprove that every infinite $B _ 3$ sequence $A \subseteq \mathbb{N}$ (all 3-term sums $a _ i + a _ j + a _ k$ with $i \le j \le k$ distinct) satisfies
 

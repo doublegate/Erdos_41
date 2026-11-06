@@ -1,0 +1,13 @@
+name = "B3Liminf"
+version = "0.1.0"
+defaultTargets = ["B3Liminf"]
+
+# Same Mathlib commit as the other erdos<N> Lean projects (lean-toolchain v4.33.1),
+# so the shared package cache in ~/.cache/lean-shared/v4.33.1 is reused.
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "v4.33.1"  # manifest pins 0df444a360eaa60ab8c11dca51a86af692955474
+
+[[lean_lib]]
+name = "B3Liminf"

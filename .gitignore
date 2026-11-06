@@ -1,5 +1,11 @@
 /target
 /.lake
+b3_liminf/lean/.lake
+b3_liminf/paper/*.aux
+b3_liminf/paper/*.log
+b3_liminf/paper/*.out
+b3_liminf/paper/*.fls
+b3_liminf/paper/*.fdb_latexmk
 **/*.rs.bk
 *.ck.json
 records_*.json
